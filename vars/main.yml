@@ -1,0 +1,109 @@
+---
+iis_feature:
+  - 'Web-Server'
+  - 'Web-WebServer'
+  - 'Web-Security'
+  - 'Web-Filtering'
+  - 'Web-Cert-Auth'
+  - 'Web-IP-Security'
+  - 'Web-CertProvider'
+  - 'Web-Common-Http'
+  - 'Web-Http-Errors'
+  - 'Web-Dir-Browsing'
+  - 'Web-Static-Content'
+  - 'Web-Default-Doc'
+  - 'Web-Http-Redirect'
+  - 'Web-Performance'
+  - 'Web-Stat-Compression'
+  - 'Web-Dyn-Compression'
+  - 'Web-Health'
+  - 'Web-Http-Logging'
+  - 'Web-Log-Libraries'
+  - 'Web-Custom-Logging'
+  - 'Web-Request-Monitor'
+  - 'Web-Http-Tracing'
+  - 'Web-App-Dev'
+  - 'Web-Net-Ext'
+  - 'Web-Net-Ext45'
+  - 'Web-ASP'
+  - 'Web-Asp-Net'
+  - 'Web-Asp-Net45'
+  - 'Web-ISAPI-Ext'
+  - 'Web-ISAPI-Filter'
+  - 'Web-AppInit'
+  - 'Web-Includes'
+  - 'Web-Mgmt-Tools'
+  - 'Web-Mgmt-Console'
+  - 'Web-Scripting-Tools'
+  - 'Web-Mgmt-Service'
+#  - 'Web-WMI'
+#  - 'Web-Lgcy-Scripting'
+#  - 'Web-Lgcy-Mgmt-Console'
+#  - 'Web-Metabasonsole '
+#  - 'Web-Mgmt-Compat'
+#  - 'Web-WebSockets'
+#  - 'Web-Url-Auth'
+#  - 'Web-Windows-Auth'
+#  - 'Web-Basic-Auth'
+#  - 'Web-Client-Auth'
+#  - 'Web-Digest-Auth'
+#  - 'Web-ODBC-Logging'
+#  - 'Web-DAV-Publishing'
+#  - 'Web-CGI'
+#  - 'Web-Ftp-Server'
+#  - 'Web-Ftp-Service'
+#  - 'Web-Ftp-Ext'
+
+addition_feature:
+  - 'urlrewrite'
+
+addition_script:
+  - 'retentionscript.vbs'
+
+iis_app_pool_name: '{{ iis_site_name }}'
+iis_app_pool_attributes:
+  recycling.periodicRestart.schedule: ["0{{ 6|random(start=2) }}:{{ 59|random(start=10) }}:00"]
+  recycling.periodicRestart.time: "00:00:00:00.000000"
+
+iis_site_id: ''
+iis_site_ip: '{{ ansible_host }}'
+iis_site_port: '80'
+iis_site_ssl: true
+iis_site_path: '{{ iis_path }}\IIS_site\{{ iis_site_name }}'
+iis_logs_path: '{{ iis_path }}\IIS_logs'
+iis_site_parameters: ''
+iis_site_state: started
+iis_site_web_config: ''
+iis_site_web_config_force: true
+
+iis_binding_ip: '*'
+iis_binding_port: '80'
+iis_binding_protocol: 'http'
+iis_binding_state: 'present'
+iis_binding_certificate_store_name: 'My'
+iis_binding_certificate_hash: ''
+
+iis_bindings: []
+  #- host_header: ''
+  #  ip: ''
+  #  port: ''
+  #  protocol: 'http'
+  #  state: 'present'
+  #  certificate_store_name: 'My'
+  #  certificate_hash: ''
+
+iis_acl_path: 
+  - '{{ iis_site_path }}'
+  - '{{ iis_logs_path }}'
+iis_acl_user: 'IIS_IUSRS'
+iis_acl_rights: FullControl
+iis_acl_type: allow
+iis_acl_state: present
+iis_acl_inherit: 'ContainerInherit, ObjectInherit'
+iis_acl_propagation: 'None'
+
+iis_sys_conf:
+  - -section:system.applicationHost/log /centralLogFileMode:"Site"
+  - -section:system.applicationHost/log /centralW3CLogFile.directory:"{{ iis_logs_path }}"
+  - -section:system.applicationHost/log /centralW3CLogFile.logExtFileFlags:"Date,Time,UserName,ServerIP,Method,UriStem,UriQuery,HttpStatus,BytesSent,BytesRecv,TimeTaken,ServerPort,UserAgent,Referer,ProtocolVersion,Host"
+  - -section:system.applicationHost/sites /+"siteDefaults.logFile.customFields.[logFieldName='Realip',sourceName='X_FORWARDED_FOR',sourceType='RequestHeader']"

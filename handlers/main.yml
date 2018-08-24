@@ -1,0 +1,6 @@
+---
+- name: Restart IIS service
+  win_service:
+    name: w3svc
+    start_mode: delayed
+    state: restarted

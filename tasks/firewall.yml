@@ -1,0 +1,12 @@
+---
+- name: Firewall rule to allow IIS
+  win_firewall_rule:
+    enable: yes
+    state: present
+    action: allow
+    direction: In
+    name: '{{ item.name }}'
+    protocol: '{{ item.protocol }}'
+    localport: '{{ item.localport }}'
+  with_items:
+    - '{{ iis_port }}'

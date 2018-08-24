@@ -1,0 +1,7 @@
+---
+iis_port:
+  - { name: HTTP, protocol: TCP, localport: 80}
+  - { name: HTTPS, protocol: TCP, localport: 443}
+
+iis_path: 'd:'
+iis_logs_age: '30'

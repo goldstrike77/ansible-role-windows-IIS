@@ -1,0 +1,13 @@
+---
+- name: IIS additional package installation
+  win_chocolatey:
+    name: '{{ addition_feature }}'
+    state: 'latest'
+  ignore_errors: yes
+
+- name: IIS additional scripts transfer
+  win_template:
+    src: '{{ item }}'
+    dest: 'c:\Windows\{{ item }}'
+  with_items:
+    - '{{ addition_script }}'
