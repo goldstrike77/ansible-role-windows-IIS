@@ -4,7 +4,7 @@
     name: '{{ item }}'
     state: 'latest'
   with_items:
-    - '{{ addition_script }}'
+    - '{{ addition_feature }}'
   ignore_errors: yes
 
 - name: IIS additional scripts transfer
