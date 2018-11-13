@@ -1,7 +1,7 @@
 ansible-role-windows-IIS
-=========
+========================
 
-Do not use in production environment.
+Testing and development purposes only, should not be used in a production environment.
 
 Install and configure Internet Information Services on windows system.
 
