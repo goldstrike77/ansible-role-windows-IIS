@@ -88,7 +88,9 @@
     executable: cscript.exe
     arguments: c:\Windows\retentionscript.vbs
     time: '{{ 5|random(start=1) }}am'
-    frequency: daily
     state: present
     enabled: yes
     user: SYSTEM
+    triggers:
+    - type: daily
+      start_boundary: '2017-10-09T0{{ 5|random(start=1) }}:00:00'
